@@ -43,7 +43,7 @@ export default function Home() {
     ]
 
   return (
-    <>
+    <> 
     <AlurakutMenu/>
     <MainGrid> 
       <div className='profileArea'style={{gridArea:'profileArea'}}>

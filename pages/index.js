@@ -1,5 +1,5 @@
 import React from 'react'
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
 import {AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet} from '../src/lib/alurakutCommons'
@@ -24,7 +24,27 @@ function ProfileSideBar(props){
     </Box>
   )
 }
-
+function ProfileRelationsBox(props){
+  return (
+    <ProfileRelationsBoxWrapper>
+        <h2 className="smallTitle">
+          {props.title} ({props.items.length})
+        </h2>
+        {/* <ul>
+          {props.map((itemAtual) => {
+            return (
+              <li key={itemAtual}>
+                <a href={`https://github.com/${itemAtual}.png`}>
+                  <img src={itemAtual.image} />
+                  <span>{itemAtual.title}</span>
+                </a>
+              </li>
+            )
+          })}
+        </ul> */}
+    </ProfileRelationsBoxWrapper>
+  )
+}
 
 export default function Home() {
   const gitHubUser = 'gabriel-elesbao'
@@ -41,15 +61,28 @@ export default function Home() {
       'marcobrunodev',
       'felipefialho'
     ]
+    const [seguidores, setSeguidores]=useState([]);
+
+    useEffect(()=>{
+        fetch('https://api.github.com/users/gabriel-elesbao/followers')
+        .then((respServidor)=>{
+            return respServidor.json()
+    
+        })
+        .then((respCompleta)=>{
+            setSeguidores(respCompleta)
+          })
+      },[]) //colocando um array como segundo parametro, o useEffect, irá carregar apenas uma vez
+
 
   return (
     <> 
     <AlurakutMenu/>
     <MainGrid> 
       <div className='profileArea'style={{gridArea:'profileArea'}}>
-          <AlurakutMenu.Wrapper>
+        
                <ProfileSideBar gitHubUser={gitHubUser} />
-          </AlurakutMenu.Wrapper>
+        
           
       </div>
        
@@ -67,12 +100,10 @@ export default function Home() {
                 e.preventDefault()
 
                 const dadosDoForm = new FormData(e.target)
-                console.log('campo',dadosDoForm.get('title') )
-                console.log('campo',dadosDoForm.get('image') )
 
                 const comunidade = {
                   id: new Date().toISOString(),
-                  titulo:  dadosDoForm.get('title'),
+                  title:  dadosDoForm.get('title'),
                   image: dadosDoForm.get('image')
                 }
 
@@ -106,25 +137,26 @@ export default function Home() {
       </div> 
         
       <div className='profileRelationsArea'style={{gridArea:'profileRelationsArea'}}>
-        <ProfileRelationsBoxWrapper>
-              <h2 className='smallTitle'>
-                  comunidades ({comunidades.length})
-              </h2>
 
-               <ul>
-                  {comunidades.map((itemAtual)=>{
-                  return(
+      <ProfileRelationsBox title='Seguidores' items={seguidores}/>
+
+      <ProfileRelationsBoxWrapper>
+              <h2 className="smallTitle">
+                Comunidades ({comunidades.length})
+              </h2>
+              <ul>
+                {comunidades.map((itemAtual) => {
+                  return (
                     <li key={itemAtual.id}>
-                        <a href={`/users/${itemAtual.title}`} >
-                          <img src={itemAtual.image} />
-                          <span>{itemAtual.title}</span>
-                        </a>
+                      <a href={`/users/${itemAtual.title}`}>
+                        <img src={itemAtual.image} />
+                        <span>{itemAtual.title}</span>
+                      </a>
                     </li>
-                    
-                  ) 
-                  })}
+                  )
+                })}
               </ul>
-        </ProfileRelationsBoxWrapper>
+          </ProfileRelationsBoxWrapper>
 
 
         <ProfileRelationsBoxWrapper>

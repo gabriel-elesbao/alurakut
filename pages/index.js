@@ -48,11 +48,7 @@ function ProfileRelationsBox(props){
 
 export default function Home() {
   const gitHubUser = 'gabriel-elesbao'
-  const [comunidades,setComunidades] = useState([{
-    id: '21212121212',
-    title: 'Eu odeio acordar cedo',
-    image : 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }])
+  const [comunidades,setComunidades] = useState([])
   const pessoasFavoritas = [
       'juunegreiros',
       'omariosouto',
@@ -72,6 +68,36 @@ export default function Home() {
         .then((respCompleta)=>{
             setSeguidores(respCompleta)
           })
+
+          // API GrapQL
+          fetch('https://graphql.datocms.com/',{
+            method: 'POST',
+            headers: {
+              'Authorization': 'e69b3f09c2fdc09f83b43199ace816',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+
+            },
+            body: JSON.stringify({
+              "query": `query {
+                allCommunities{
+                  title,
+                  id,
+                  imageUrl
+                  creatorSlug
+                }
+              }`
+            })
+
+
+          }).then((resp)=> resp.json())
+            .then((resp)=>{
+              const comunidadesDato = resp.data.allCommunities
+              setComunidades(comunidadesDato)
+              console.log(comunidadesDato)
+            })
+
+
       },[]) //colocando um array como segundo parametro, o useEffect, irá carregar apenas uma vez
 
 
@@ -148,8 +174,8 @@ export default function Home() {
                 {comunidades.map((itemAtual) => {
                   return (
                     <li key={itemAtual.id}>
-                      <a href={`/users/${itemAtual.title}`}>
-                        <img src={itemAtual.image} />
+                      <a href={`/communities/${itemAtual.id}`}>
+                        <img src={itemAtual.imageUrl} />
                         <span>{itemAtual.title}</span>
                       </a>
                     </li>

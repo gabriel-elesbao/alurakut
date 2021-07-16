@@ -4,11 +4,9 @@ import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
 import {AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet} from '../src/lib/alurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
-import Head from 'next/head'
 
-
-
-
+import jwt from 'jsonwebtoken'
+import nookies from  'nookies'
 
 
 function ProfileSideBar(props){
@@ -52,11 +50,11 @@ function ProfileRelationsBox(props){
   )
 }
 
-export default function Home() {
+export default function Home(props) {
  
     
 
-  const gitHubUser = 'gabriel-elesbao'
+  const gitHubUser = props.githubUser
   const [comunidades,setComunidades] = useState([])
   const pessoasFavoritas = [
       'juunegreiros',
@@ -236,3 +234,15 @@ export default function Home() {
    </> 
   )
 }
+
+export async function getServerSideProps(context) {
+  const cookies = nookies.get(context)
+  const token = cookies.USER_TOKEN
+  const {githubUser} = jwt.decode(token)
+  return {
+    props: {
+      githubUser
+    }, // will be passed to the page component as props
+  }
+}
+ 

@@ -6,7 +6,8 @@ import {AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet} 
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 import Head from 'next/head'
 
-<Head></Head>
+
+
 
 
 
@@ -52,6 +53,9 @@ function ProfileRelationsBox(props){
 }
 
 export default function Home() {
+ 
+    
+
   const gitHubUser = 'gabriel-elesbao'
   const [comunidades,setComunidades] = useState([])
   const pessoasFavoritas = [

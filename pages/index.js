@@ -5,6 +5,8 @@ import Box from '../src/components/Box'
 import {AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet} from '../src/lib/alurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 
+
+
 function ProfileSideBar(props){
   return(
     
@@ -81,8 +83,8 @@ export default function Home() {
             body: JSON.stringify({
               "query": `query {
                 allCommunities{
-                  title,
                   id,
+                  title,
                   imageUrl
                   creatorSlug
                 }
@@ -94,7 +96,7 @@ export default function Home() {
             .then((resp)=>{
               const comunidadesDato = resp.data.allCommunities
               setComunidades(comunidadesDato)
-              console.log(comunidadesDato)
+              
             })
 
 
@@ -128,13 +130,25 @@ export default function Home() {
                 const dadosDoForm = new FormData(e.target)
 
                 const comunidade = {
-                  id: new Date().toISOString(),
                   title:  dadosDoForm.get('title'),
-                  image: dadosDoForm.get('image')
+                  imageUrl: dadosDoForm.get('image'),
+                  creatorSlug: gitHubUser
                 }
+                fetch('/api/comunidades',{
+                  method: 'POST',
+                  headers:{
+                      'Content-Type':'application/json'
+                  },
+                  body: JSON.stringify(comunidade)
+                }).then(async (resp)=>{
+                    const dados= await resp.json()
+                    console.log(dados.registroCriado)
+                    const comunidade = dados.registroCriado
+                    const comunidadesAtualizadas = [...comunidades, comunidade]
+                   setComunidades(comunidadesAtualizadas)
+                })
 
-                const comunidadesAtualizadas = [...comunidades, comunidade]
-                setComunidades(comunidadesAtualizadas)
+                
            }}>
              <div>
               <input 

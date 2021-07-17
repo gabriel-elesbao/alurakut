@@ -29,14 +29,22 @@ function ProfileSideBar(props){
   )
 }
 function ProfileRelationsBox(props){
-  
+  const [seg, setSeg] = useState()
+  const totalSeguidores = fetch(`https://api.github.com/users/${props.userGit}`)
+                          .then((resp)=> resp.json())
+                          .then((resp)=> {
+                            setSeg(resp.followers)
+                          })
+                          
+
   return (
     <ProfileRelationsBoxWrapper>
         <h2 className="smallTitle">
-          {props.title} ({props.items.length})
+          {props.title} ({seg})
         </h2>
         <ul>
           {props.items.slice(2,8).map((itemAtual) => {
+           
             return (
               <li key={itemAtual}>
                 <a href={`https://github.com/${itemAtual.login}`}>
@@ -184,7 +192,7 @@ export default function Home(props) {
         
       <div className='profileRelationsArea'style={{gridArea:'profileRelationsArea'}}>
 
-      <ProfileRelationsBox title='Seguidores' items={seguidores}/>
+      <ProfileRelationsBox userGit={gitHubUser} title='Seguidores' items={seguidores}/>
 
       <ProfileRelationsBoxWrapper>
               <h2 className="smallTitle">

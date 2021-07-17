@@ -29,7 +29,7 @@ function ProfileSideBar(props){
   )
 }
 function ProfileRelationsBox(props){
-  console.log('list: ', props.items)
+  
   return (
     <ProfileRelationsBoxWrapper>
         <h2 className="smallTitle">
@@ -68,7 +68,7 @@ export default function Home(props) {
     const [seguidores, setSeguidores]=useState([]);
 
     useEffect(()=>{
-        fetch('https://api.github.com/users/gabriel-elesbao/followers')
+        fetch(`https://api.github.com/users/${gitHubUser}/followers`)
         .then((respServidor)=>{
             return respServidor.json()
     

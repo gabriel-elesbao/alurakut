@@ -29,23 +29,24 @@ function ProfileSideBar(props){
   )
 }
 function ProfileRelationsBox(props){
+  console.log('list: ', props.items)
   return (
     <ProfileRelationsBoxWrapper>
         <h2 className="smallTitle">
           {props.title} ({props.items.length})
         </h2>
-        {/* <ul>
-          {props.map((itemAtual) => {
+        <ul>
+          {props.items.slice(2,8).map((itemAtual) => {
             return (
               <li key={itemAtual}>
-                <a href={`https://github.com/${itemAtual}.png`}>
-                  <img src={itemAtual.image} />
-                  <span>{itemAtual.title}</span>
+                <a href={`https://github.com/${itemAtual.login}`}>
+                  <img src={itemAtual.avatar_url} />
+                  <span>{itemAtual.login}</span>
                 </a>
               </li>
             )
           })}
-        </ul> */}
+        </ul>
     </ProfileRelationsBoxWrapper>
   )
 }

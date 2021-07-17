@@ -13,6 +13,7 @@ function ProfileSideBar(props){
   return(
     
     <Box as='aside'>
+     
        <img src ={`https://github.com/${props.gitHubUser}.png` } style={{borderRadius:'8px'}}/>
        <hr/>
 
@@ -25,6 +26,7 @@ function ProfileSideBar(props){
        <hr />
 
        <AlurakutProfileSidebarMenuDefault/>
+      
     </Box>
   )
 }
@@ -119,11 +121,14 @@ export default function Home(props) {
 
   return (
     <> 
-    <AlurakutMenu/>
+    <AlurakutMenu githubUser={gitHubUser}/>
+    
     <MainGrid> 
+    
       <div className='profileArea'style={{gridArea:'profileArea'}}>
         
                <ProfileSideBar gitHubUser={gitHubUser} />
+
         
           
       </div>
@@ -133,6 +138,7 @@ export default function Home(props) {
           <h1 className='title'>
               Bem vindo(a)
           </h1>
+          <span>{gitHubUser}</span>
           <OrkutNostalgicIconSet/>  
         </Box>
 
